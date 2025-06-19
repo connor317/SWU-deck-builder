@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+    <h1 style="text-align:center">Card Search Results</h1>
+    <% for(var i = 0; i < locals.Cards.length; i++) { %>
+        <div style="margin: 5px">
+            <% for(var j = 0; j < 5 && i < Cards.length; j++) { %>
+                <img src="<%= Cards[i].frontImage %>" alt="<%= Cards[i].name %>" width="18%" style="margin: 5px"/>
+                <% i++; %>
+            <% } %>
+        </div>
+    <% } %>
+</body>
+</html>
