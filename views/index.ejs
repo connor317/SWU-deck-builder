@@ -7,6 +7,11 @@
 </head>
 <body>
     <h1 style="text-align:center">Card Search Results</h1>
+    <div>
+        <form action="/search">
+            <input type="text" placeholder="Search.." name="q">
+        </form>
+    </div>
     <% for(var i = 0; i < locals.Cards.length; i++) { %>
         <div style="margin: 5px">
             <% for(var j = 0; j < 5 && i < Cards.length; j++) { %>
