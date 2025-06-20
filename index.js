@@ -11,25 +11,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', async (request, response) => {
     response.render('index', {
-        Cards: [{ frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" },
-        { frontImage: "https://cdn.swu-db.com/images/cards/SOR/059.png", name: "2-1B Surgical Droid" }]
+        Cards: []
     });
 
 });
@@ -52,7 +34,8 @@ app.get('/search', async (request, response) => {
             $or: [
                 { Name: { $regex: query, $options: 'i' }},
                 { FrontText: { $regex: query, $options: 'i' } },
-                { BackText: { $regex: query, $options: 'i' } }
+                { BackText: { $regex: query, $options: 'i' } },
+                { Subtitle: { $regex: query, $options: 'i'} }
             ],
             VariantType: "Normal"
         };
@@ -65,7 +48,7 @@ app.get('/search', async (request, response) => {
         const deckResults = await deckCursor.toArray();
         const baseResults = await basesCursor.toArray();
         
-        return response.render('search', { LeaderCards: leaderResults, DeckCards: deckResults, BaseCards: baseResults });
+        return response.render('search', { LeaderCards: leaderResults, DeckCards: deckResults, BaseCards: baseResults, q: request.query.q });
     } catch (error) {
         console.error("Database connection error:", error);
         return response.status(500).send("Database connection error");

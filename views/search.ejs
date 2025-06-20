@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Search Results</title>
 </head>
 <body>
     <h1 style="text-align:center">Card Search Results</h1>
     <div style="text-align:center">
         <form action="/search">
-            <input type="text" placeholder="Search.." name="q">
+            <input type="text" placeholder="Search.." value="<%= locals.q %>" name="q">
         </form>
     </div>
     <% if (locals.LeaderCards.length) { %>
