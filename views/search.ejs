@@ -7,18 +7,46 @@
 </head>
 <body>
     <h1 style="text-align:center">Card Search Results</h1>
-    <div>
+    <div style="text-align:center">
         <form action="/search">
             <input type="text" placeholder="Search.." name="q">
         </form>
     </div>
-    <% for(var i = 0; i < locals.Cards.length; i++) { %>
+    <% if (locals.LeaderCards.length) { %>
+        <h1 style="text-align:center">Leaders</h1>
+    <% } %>
+    <% for(var i = 0; i < locals.LeaderCards.length; i++) { %>
         <div style="margin: 5px">
-            <% for(var j = 0; j < 5 && i < Cards.length; j++) { %>
-                <img src="<%= Cards[i].FrontArt %>" alt="<%= Cards[i].name %>" width="18%" style="margin: 5px"/>
+            <% for(var j = 0; j < 5 && i < LeaderCards.length; j++) { %>
+                <img src="<%= LeaderCards[i].FrontArt %>" alt="<%= LeaderCards[i].Name %>" width="18%" style="margin: 5px"/>
                 <% i++; %>
             <% } %>
         </div>
     <% } %>
+
+    <% if (locals.BaseCards.length) { %>
+        <h1 style="text-align:center">Bases</h1>
+    <% } %>
+    <% for(var i = 0; i < locals.BaseCards.length; i=i) { %>
+        <div style="margin: 5px">
+            <% for(var j = 0; j < 4 && i < BaseCards.length; j++) { %>
+                <img src="<%= BaseCards[i].FrontArt %>" alt="<%= BaseCards[i].Name %>" width="23%" style="margin: 5px"/>
+                <% i++; %>
+            <% } %>
+        </div>
+    <% } %>
+
+    <% if (locals.DeckCards.length) { %>
+        <h1 style="text-align:center">Units, Events and Upgrades</h1>
+    <% } %>
+    <% for(var i = 0; i < locals.DeckCards.length; i++) { %>
+        <div style="margin: 5px">
+            <% for(var j = 0; j < 5 && i < DeckCards.length; j++) { %>
+                <img src="<%= DeckCards[i].FrontArt %>" alt="<%= DeckCards[i].Name %>" width="18%" style="margin: 5px"/>
+                <% i++; %>
+            <% } %>
+        </div>
+    <% } %>
+
 </body>
 </html>

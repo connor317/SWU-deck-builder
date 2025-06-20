@@ -37,28 +37,41 @@ app.get('/', async (request, response) => {
 app.get('/search', async (request, response) => {
     const query = request.query.q;
     console.log("Search query:", query);
-    if (!query) {
-        return response.render('search', { Cards: [] });
-    }
     const client = new MongoClient(url);
     try {
         await client.connect();
         const coll = client.db('swu').collection('card');
-        const cursor = coll.find({ Name: { $regex: query, $options: 'i' } });
-        const results = await cursor.toArray();
-        console.log("Search results:", results);
-        if (results.length === 0) {
-            return response.render('search', { Cards: [] });
-        } else {
-            return response.render('search', { Cards: results });
-        }
+
+        // TODO: Add abitlity to sort by release date.
+        // Currently sorting by Set but this is alphabetical not by relase order.
+        const sort = {
+            'Set': -1,
+            'Number': 1
+        };
+        search = {
+            $or: [
+                { Name: { $regex: query, $options: 'i' }},
+                { FrontText: { $regex: query, $options: 'i' } },
+                { BackText: { $regex: query, $options: 'i' } }
+            ],
+            VariantType: "Normal"
+        };
+
+        const leadersCursor = coll.find({ ...search, Type: "Leader" }, { sort });
+        const deckCursor = coll.find({ ...search,  Type: {$in: ["Unit", "Event", "Upgrade"]} }, { sort });
+        const basesCursor = coll.find({ ...search, Type: "Base" }, { sort });
+
+        const leaderResults = await leadersCursor.toArray();
+        const deckResults = await deckCursor.toArray();
+        const baseResults = await basesCursor.toArray();
+        
+        return response.render('search', { LeaderCards: leaderResults, DeckCards: deckResults, BaseCards: baseResults });
     } catch (error) {
         console.error("Database connection error:", error);
         return response.status(500).send("Database connection error");
     } finally {
         await client.close();
     }
-    // Simulate a database search
 });
 
 app.listen(process.env.PORT || 3000, () => {
