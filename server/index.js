@@ -3,20 +3,16 @@ const express = require('express');
 const { readFile } = require('fs').promises;
 const app = express();
 const { MongoClient } = require('mongodb');
+const cors = require("cors")
 
 const url = 'mongodb://localhost:27017/';
 
-
-app.set('view engine', 'ejs');
-
-app.get('/', async (request, response) => {
-    response.render('index', {
-        Cards: []
-    });
-
+app.use(cors())
+app.get('/api', async (request, response) => {
+    response.render("This is the api for the Deck Builder")
 });
 
-app.get('/search', async (request, response) => {
+app.get('/api/search', async (request, response) => {
     const query = request.query.q;
     console.log("Search query:", query);
     const client = new MongoClient(url);
@@ -48,7 +44,7 @@ app.get('/search', async (request, response) => {
         const deckResults = await deckCursor.toArray();
         const baseResults = await basesCursor.toArray();
         
-        return response.render('search', { LeaderCards: leaderResults, DeckCards: deckResults, BaseCards: baseResults, q: request.query.q });
+        return response.json({ LeaderCards: leaderResults, DeckCards: deckResults, BaseCards: baseResults, q: request.query.q });
     } catch (error) {
         console.error("Database connection error:", error);
         return response.status(500).send("Database connection error");
