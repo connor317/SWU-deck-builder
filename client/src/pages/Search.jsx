@@ -3,7 +3,8 @@ import { useSearchParams } from "react-router-dom"
 
 export default function Search() {
     const [searchParams, setSearchParams] = useSearchParams()
-    const q = searchParams.get("q")
+    const q = searchParams.get("q") || ""
+    
     const [cards, setCards] = useState({LeaderCards: [], BaseCards: [], DeckCards: []})
 
     const style = {"margin": "5px"}

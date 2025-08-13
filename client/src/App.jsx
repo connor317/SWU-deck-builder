@@ -3,17 +3,22 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import Home from "./pages/Home"
 import Search from "./pages/Search"
+import "./styles.css"
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Navbar from './Navbar'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/search" element={<Search/>}/>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Navbar />
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/search" element={<Search/>}/>
+        </Routes>
+      </div>
+    </>
   )
 }
 
