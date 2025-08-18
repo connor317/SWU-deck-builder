@@ -7,7 +7,7 @@ export default function Search() {
     
     const [cards, setCards] = useState({LeaderCards: [], BaseCards: [], DeckCards: []})
 
-    const style = {"margin": "5px"}
+    const style = {"margin": "0.5%"}
     const center = {"textAlign": "center"}
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function Search() {
                 <h1 style={center}>Leader Cards</h1>
                 <div>
                     {cards.LeaderCards.map(card => 
-                        <img src={card.FrontArt} alt={card.Name} width="18%" style={style} key={card._id}/>
+                        <img src={card.FrontArt} alt={card.Name} width="19%" style={style} key={card._id}/>
                     )}
                 </div>
             </div>
