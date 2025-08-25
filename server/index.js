@@ -53,6 +53,28 @@ app.get('/api/search', async (request, response) => {
     }
 });
 
+// Take in a set abreviation and number and return the card that matches
+app.get('/api/card', async (request, response) => {
+    const set = request.query.set
+    const number = request.query.number
+    const client = new MongoClient(url);
+    try {
+        await client.connect();
+        const coll = client.db('swu').collection('card');
+        search = {$and: [{Set: set}, {Number: number}]}
+        console.log(search)
+        const result = await coll.findOne({ ...search})
+        console.log(result)
+        return response.json(result)
+    } catch (error) {
+        console.error("Database connection error:", error);
+        return response.status(500).send("Database connection error");
+    } finally {
+        console.log("closing client")
+        await client.close();
+    }
+});
+
 app.listen(process.env.PORT || 3000, () => {
     console.log('Server is running on port 3000');
 });
