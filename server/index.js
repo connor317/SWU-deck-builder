@@ -3,7 +3,7 @@ const express = require('express');
 const { readFile } = require('fs').promises;
 const app = express();
 const { MongoClient, ObjectId } = require('mongodb');
-const cors = require("cors")
+const cors = require("cors");
 
 const url = 'mongodb://localhost:27017/';
 
@@ -75,13 +75,13 @@ app.get('/api/card', async (request, response) => {
     }
 });
 
-app.get('/api/deck', async (request, response) => {
-    const id = request.query.id
+app.get('/api/deck/:deckId', async (request, response) => {
+    const deckId = request.params.deckId
     const client = new MongoClient(url)
     try {
         await client.connect()
         const coll = client.db('swu').collection('deck')
-        const search = {"_id": new ObjectId(id)}
+        const search = {_id: new ObjectId(deckId)}
         console.log(search)
         const result = await coll.findOne(search)
         return response.json(result)

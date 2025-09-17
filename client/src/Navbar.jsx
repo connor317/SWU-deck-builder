@@ -5,6 +5,7 @@ export default function Navbar() {
         <Link to="/" className="site-title">SWU Deck Builder</Link>
         <ul>
             <a href="/search" >Search</a>
+            <CustomLink to="/decks">Decks</CustomLink>
         </ul>
     </nav>
 }
