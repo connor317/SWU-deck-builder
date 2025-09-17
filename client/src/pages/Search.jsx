@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react"
 import { useSearchParams } from "react-router-dom"
+import "./displayStyles.css"
 
 export default function Search() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -38,9 +39,9 @@ export default function Search() {
             { cards.LeaderCards.length > 0 && 
             <div>
                 <h1 style={center}>Leader Cards</h1>
-                <div>
+                <div className="deck-card-grid">
                     {cards.LeaderCards.map(card => 
-                        <img src={card.FrontArt} alt={card.Name} width="19%" style={style} key={card._id}/>
+                        <img src={card.FrontArt} alt={card.Name} style={{ width: "100%", margin: "0.5%" }} key={card._id}/>
                     )}
                 </div>
             </div>
@@ -48,9 +49,9 @@ export default function Search() {
             { cards.BaseCards.length > 0 &&
             <div>
             <h1 style={center}>Base Cards</h1>
-                <div>
+                <div className="deck-card-grid">
                     {cards.BaseCards.map(card => 
-                        <img src={card.FrontArt} alt={card.Name} width="18%" style={style} key={card._id}/>
+                        <img src={card.FrontArt} alt={card.Name} style={{ width: "100%", margin: "0.5%" }} key={card._id}/>
                     )}
                 </div>
             </div>
@@ -58,9 +59,9 @@ export default function Search() {
             { cards.DeckCards.length > 0 &&
             <div>
             <h1 style={center}>Deck Cards</h1>
-                <div>
+                <div className="deck-card-grid">
                     {cards.DeckCards.map(card => 
-                        <img src={card.FrontArt} alt={card.Name} width="18%" style={style} key={card._id}/>
+                        <img src={card.FrontArt} alt={card.Name} style={{ width: "100%", margin: "0.5%" }} key={card._id}/>
                     )}
                 </div>
             </div>

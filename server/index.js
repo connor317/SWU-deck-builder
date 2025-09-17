@@ -2,8 +2,8 @@
 const express = require('express');
 const { readFile } = require('fs').promises;
 const app = express();
-const { MongoClient } = require('mongodb');
-const cors = require("cors")
+const { MongoClient, ObjectId } = require('mongodb');
+const cors = require("cors");
 
 const url = 'mongodb://localhost:27017/';
 
@@ -74,6 +74,25 @@ app.get('/api/card', async (request, response) => {
         await client.close();
     }
 });
+
+app.get('/api/deck/:deckId', async (request, response) => {
+    const deckId = request.params.deckId
+    const client = new MongoClient(url)
+    try {
+        await client.connect()
+        const coll = client.db('swu').collection('deck')
+        const search = {_id: new ObjectId(deckId)}
+        console.log(search)
+        const result = await coll.findOne(search)
+        return response.json(result)
+    } catch (error) {
+        console.error("Database connection error:", error);
+        return response.status(500).send("Database connection error");
+    } finally {
+        console.log("closing client")
+        await client.close();
+    }
+})
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('Server is running on port 3000');
