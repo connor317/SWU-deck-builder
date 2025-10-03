@@ -75,6 +75,39 @@ app.get('/api/card', async (request, response) => {
     }
 });
 
+// Return all card names (with subname if present) that match the string in the request
+app.get('/api/autocomplete', async (request, response) => {
+    const query = request.query.q;
+    const client = new MongoClient(url);
+    try {
+        await client.connect();
+        const coll = client.db('swu').collection('card');
+        const search = {
+            $or: [
+                { Name: { $regex: query, $options: 'i' } },
+                { Subtitle: { $regex: query, $options: 'i' } }
+            ], VariantType: "Normal"
+        };
+        // Only return Name and Subtitle fields
+        const cursor = coll.find(search, { projection: { Name: 1, Subtitle: 1, _id: 0 } });
+        const cards = await cursor.toArray();
+        // Concatenate Name and Subtitle if Subtitle exists
+        console.log(cards);
+        const nameList = cards.map(card => 
+            card.Subtitle ? `${card.Name} - ${card.Subtitle}` : card.Name
+        );
+        if (!query || query.trim() === "") {
+            return response.json([]);
+        }
+        return response.json(nameList);
+    } catch (error) {
+        console.error("Database connection error:", error);
+        return response.status(500).send("Database connection error");
+    } finally {
+        await client.close();
+    }
+});
+
 app.get('/api/deck/:deckId', async (request, response) => {
     const deckId = request.params.deckId
     const client = new MongoClient(url)
